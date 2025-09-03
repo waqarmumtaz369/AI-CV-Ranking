@@ -1,9 +1,10 @@
 """
 Matching engine for CV ranking system.
 """
+import numpy as np
 from typing import List, Dict, Any, Tuple, Optional
 from difflib import SequenceMatcher
-from .models import JobDescription, CV, MatchingResult, MatchingScore
+from models import JobDescription, CV, MatchingResult, MatchingScore
 
 
 class MatchingEngine:
@@ -200,17 +201,83 @@ class MatchingEngine:
         
         return score, matched_keywords
     
+    def calculate_semantic_similarity(self, job: JobDescription, cv: CV) -> Tuple[float, str]:
+        """Calculate semantic similarity using vector embeddings."""
+        if not job.embeddings:
+            return 0.0, "No job embeddings available"
+        
+        # Calculate similarity with different CV sections
+        similarities = []
+        section_details = []
+        
+        # Skills similarity
+        if cv.skills_embeddings:
+            skills_sim = self._cosine_similarity(job.embeddings, cv.skills_embeddings)
+            similarities.append(skills_sim)
+            section_details.append(f"Skills: {skills_sim:.2f}")
+        
+        # Experience similarity
+        if cv.experience_embeddings:
+            exp_sim = self._cosine_similarity(job.embeddings, cv.experience_embeddings)
+            similarities.append(exp_sim)
+            section_details.append(f"Experience: {exp_sim:.2f}")
+        
+        # Education similarity
+        if cv.education_embeddings:
+            edu_sim = self._cosine_similarity(job.embeddings, cv.education_embeddings)
+            similarities.append(edu_sim)
+            section_details.append(f"Education: {edu_sim:.2f}")
+        
+        # Projects similarity
+        if cv.projects_embeddings:
+            proj_sim = self._cosine_similarity(job.embeddings, cv.projects_embeddings)
+            similarities.append(proj_sim)
+            section_details.append(f"Projects: {proj_sim:.2f}")
+        
+        if not similarities:
+            return 0.0, "No CV embeddings available"
+        
+        # Calculate weighted average (skills are most important)
+        weights = [0.4, 0.3, 0.2, 0.1]  # skills, experience, education, projects
+        weighted_similarity = sum(sim * weight for sim, weight in zip(similarities, weights[:len(similarities)]))
+        weighted_similarity /= sum(weights[:len(similarities)])  # Normalize by actual weights used
+        
+        details = f"Semantic similarity: {weighted_similarity:.2f} ({', '.join(section_details)})"
+        
+        return weighted_similarity, details
+    
+    def _cosine_similarity(self, vec1: List[float], vec2: List[float]) -> float:
+        """Calculate cosine similarity between two vectors."""
+        try:
+            v1 = np.array(vec1)
+            v2 = np.array(vec2)
+            
+            # Calculate cosine similarity
+            dot_product = np.dot(v1, v2)
+            norm1 = np.linalg.norm(v1)
+            norm2 = np.linalg.norm(v2)
+            
+            if norm1 == 0 or norm2 == 0:
+                return 0.0
+            
+            similarity = dot_product / (norm1 * norm2)
+            return float(similarity)
+        except Exception as e:
+            print(f"Error calculating cosine similarity: {e}")
+            return 0.0
+    
     def calculate_overall_score(self, individual_scores: List[MatchingScore]) -> float:
         """Calculate overall matching score from individual components."""
         if not individual_scores:
             return 0.0
         
-        # Weighted average (skills are most important)
+        # Updated weights including semantic similarity
         weights = {
-            "skills": 0.4,
-            "experience": 0.3,
-            "education": 0.2,
-            "keywords": 0.1
+            "semantic_similarity": 0.35,  # Most important - semantic understanding
+            "skills": 0.25,               # Traditional skill matching
+            "experience": 0.20,           # Experience years
+            "education": 0.15,            # Education level
+            "keywords": 0.05              # Keyword matching
         }
         
         weighted_sum = 0.0
@@ -226,6 +293,15 @@ class MatchingEngine:
     def match_cv_to_job(self, cv: CV, job: JobDescription) -> MatchingResult:
         """Match a CV against a job description."""
         individual_scores = []
+        
+        # Semantic similarity (most important)
+        semantic_score, semantic_details = self.calculate_semantic_similarity(job, cv)
+        individual_scores.append(MatchingScore(
+            component="semantic_similarity",
+            score=semantic_score,
+            details=semantic_details,
+            matched_items=[]
+        ))
         
         # Skills matching
         required_skills = job.required_skills + job.preferred_skills
@@ -272,6 +348,7 @@ class MatchingEngine:
         
         return MatchingResult(
             cv_filename=cv.filename,
+            original_filename=cv.original_filename,
             candidate_name=cv.name,
             total_score=overall_score,
             individual_scores=individual_scores,

@@ -3,7 +3,12 @@ Job Description processing module.
 """
 import re
 from typing import List, Optional
-from .models import JobDescription
+try:
+    from sentence_transformers import SentenceTransformer
+    SENTENCE_TRANSFORMERS_AVAILABLE = True
+except ImportError:
+    SENTENCE_TRANSFORMERS_AVAILABLE = False
+from models import JobDescription
 
 
 class JobDescriptionProcessor:
@@ -11,9 +16,18 @@ class JobDescriptionProcessor:
     
     def __init__(self, embedding_model: str = "all-MiniLM-L6-v2"):
         """Initialize the processor with an embedding model."""
-        # For Phase 1, we'll use simple TF-IDF based embeddings
-        # This avoids the sentence_transformers dependency conflict
-        self.embedding_model = None
+        # Initialize sentence transformer for real embeddings
+        if SENTENCE_TRANSFORMERS_AVAILABLE:
+            try:
+                self.embedding_model = SentenceTransformer(embedding_model)
+                print(f"✅ Loaded embedding model: {embedding_model}")
+            except Exception as e:
+                print(f"Warning: Could not load embedding model {embedding_model}: {e}")
+                print("Falling back to hash-based embeddings")
+                self.embedding_model = None
+        else:
+            print("Warning: sentence-transformers not available, using hash-based embeddings")
+            self.embedding_model = None
         
     def extract_keywords(self, text: str) -> List[str]:
         """Extract keywords from job description text."""
@@ -188,9 +202,21 @@ class JobDescriptionProcessor:
         return None
     
     def generate_embeddings(self, text: str) -> List[float]:
-        """Generate simple TF-IDF based embeddings for the job description text."""
-        # For Phase 1, we'll use a simple hash-based embedding
-        # This avoids the sentence_transformers dependency conflict
+        """Generate real embeddings using sentence transformers."""
+        if not text or not text.strip():
+            return [0.0] * 384
+        
+        # Use real embeddings if available
+        if self.embedding_model:
+            try:
+                embedding = self.embedding_model.encode(text)
+                return embedding.tolist()
+            except Exception as e:
+                print(f"Error generating embeddings: {e}")
+                # Fall back to hash-based embeddings
+                pass
+        
+        # Fallback to hash-based embeddings
         import hashlib
         text_hash = hashlib.md5(text.encode()).hexdigest()
         # Convert hash to a list of floats (simulating embeddings)

@@ -9,11 +9,11 @@ from typing import List, Dict, Any
 from datetime import datetime
 import tempfile
 
-from .models import JobDescription, CV, MatchingResult, ProcessingStatus
-from .job_processor import JobDescriptionProcessor
-from .cv_processor import CVProcessor
-from .vector_store import VectorStore
-from .matching_engine import MatchingEngine
+from models import JobDescription, CV, MatchingResult, ProcessingStatus
+from job_processor import JobDescriptionProcessor
+from cv_processor import CVProcessor
+from vector_store import VectorStore
+from matching_engine import MatchingEngine
 
 
 class StreamlitApp:
@@ -219,12 +219,109 @@ class StreamlitApp:
             if st.session_state.processed_cvs:
                 st.subheader("✅ Processed CVs")
                 for i, cv in enumerate(st.session_state.processed_cvs):
-                    with st.expander(f"📄 {cv.filename}"):
-                        st.markdown(f"**Name:** {cv.name or 'Not found'}")
-                        st.markdown(f"**Email:** {cv.email or 'Not found'}")
-                        st.markdown(f"**Experience:** {cv.total_experience_years or 0} years")
-                        st.markdown(f"**Skills:** {len(cv.skills)} found")
-                        st.markdown(f"**Education:** {len(cv.education)} entries")
+                    display_filename = cv.original_filename or cv.filename
+                    with st.expander(f"📄 {display_filename} - {cv.name or 'Unknown'}"):
+                        
+                        # Basic Info
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.markdown(f"**Name:** {cv.name or 'Not found'}")
+                            st.markdown(f"**Email:** {cv.email or 'Not found'}")
+                            st.markdown(f"**Phone:** {cv.phone or 'Not found'}")
+                            st.markdown(f"**Location:** {cv.location or 'Not found'}")
+                        
+                        with col2:
+                            st.markdown(f"**LinkedIn:** {cv.linkedin_url or 'Not found'}")
+                            st.markdown(f"**GitHub:** {cv.github_url or 'Not found'}")
+                            st.markdown(f"**Portfolio:** {cv.portfolio_url or 'Not found'}")
+                            st.markdown(f"**Experience:** {cv.total_experience_years or 0} years")
+                        
+                        # Professional Summary
+                        if cv.professional_summary:
+                            st.markdown("**Professional Summary:**")
+                            st.markdown(f"_{cv.professional_summary}_")
+                        
+                        # Skills
+                        if cv.skills:
+                            st.markdown(f"**Skills ({len(cv.skills)}):**")
+                            skills_text = ", ".join(cv.skills)
+                            st.markdown(f"_{skills_text}_")
+                        
+                        # Experience
+                        if cv.experience:
+                            st.markdown(f"**Experience ({len(cv.experience)} entries):**")
+                            for j, exp in enumerate(cv.experience):
+                                st.markdown(f"**Experience {j+1}: {exp.title or 'Unknown Title'}**")
+                                with st.container():
+                                    st.markdown(f"**Company:** {exp.company or 'Unknown'}")
+                                    st.markdown(f"**Title:** {exp.title or 'Unknown'}")
+                                    st.markdown(f"**Duration:** {exp.start_date or 'Unknown'} - {exp.end_date or 'Present'}")
+                                    st.markdown(f"**Description:** {exp.description or 'No description'}")
+                                    if exp.skills_used:
+                                        st.markdown(f"**Skills Used:** {', '.join(exp.skills_used)}")
+                                st.markdown("---")
+                        
+                        # Education
+                        if cv.education:
+                            st.markdown(f"**Education ({len(cv.education)} entries):**")
+                            for j, edu in enumerate(cv.education):
+                                st.markdown(f"**Education {j+1}: {edu.degree or 'Unknown Degree'}**")
+                                with st.container():
+                                    st.markdown(f"**Degree:** {edu.degree or 'Unknown'}")
+                                    st.markdown(f"**Field:** {edu.field or 'Unknown'}")
+                                    st.markdown(f"**Institution:** {edu.institution or 'Unknown'}")
+                                    st.markdown(f"**Graduation Year:** {edu.graduation_year or 'Unknown'}")
+                                    st.markdown(f"**GPA:** {edu.gpa or 'Not specified'}")
+                                st.markdown("---")
+                        
+                        # Projects
+                        if cv.projects:
+                            st.markdown(f"**Projects ({len(cv.projects)} entries):**")
+                            for j, proj in enumerate(cv.projects):
+                                st.markdown(f"**Project {j+1}: {proj.title or 'Unknown Project'}**")
+                                with st.container():
+                                    st.markdown(f"**Title:** {proj.title or 'Unknown'}")
+                                    st.markdown(f"**Type:** {proj.project_type or 'Unknown'}")
+                                    st.markdown(f"**Description:** {proj.description or 'No description'}")
+                                    if proj.tech_stack:
+                                        st.markdown(f"**Tech Stack:** {', '.join(proj.tech_stack)}")
+                                    if proj.github_url:
+                                        st.markdown(f"**GitHub:** {proj.github_url}")
+                                    if proj.demo_url:
+                                        st.markdown(f"**Demo:** {proj.demo_url}")
+                                st.markdown("---")
+                        
+                        # Certifications
+                        if cv.certifications:
+                            st.markdown(f"**Certifications ({len(cv.certifications)} entries):**")
+                            for j, cert in enumerate(cv.certifications):
+                                st.markdown(f"• **{cert.name or 'Unknown'}** - {cert.issuer or 'Unknown Issuer'}")
+                                if cert.date_earned:
+                                    st.markdown(f"  - Earned: {cert.date_earned}")
+                                if cert.expiry_date:
+                                    st.markdown(f"  - Expires: {cert.expiry_date}")
+                        
+                        # Awards
+                        if cv.awards:
+                            st.markdown(f"**Awards ({len(cv.awards)}):**")
+                            for award in cv.awards:
+                                st.markdown(f"• {award}")
+                        
+                        # Publications
+                        if cv.publications:
+                            st.markdown(f"**Publications ({len(cv.publications)}):**")
+                            for pub in cv.publications:
+                                st.markdown(f"• {pub}")
+                        
+                        # Languages
+                        if cv.languages:
+                            st.markdown(f"**Languages ({len(cv.languages)}):**")
+                            for lang in cv.languages:
+                                st.markdown(f"• {lang}")
+                        
+                        # Raw Data (Optional)
+                        if st.checkbox(f"Show Raw Data for {display_filename}"):
+                            st.json(cv.dict())
     
     def _process_uploaded_cvs(self, uploaded_files):
         """Process uploaded CV files."""
@@ -246,8 +343,8 @@ class StreamlitApp:
                     tmp_file.write(uploaded_file.getvalue())
                     tmp_path = tmp_file.name
                 
-                # Process CV
-                cv = self.cv_processor.process_cv(tmp_path)
+                # Process CV with original filename
+                cv = self.cv_processor.process_cv(tmp_path, original_filename=uploaded_file.name)
                 processed_cvs.append(cv)
                 
                 # Store in vector database
@@ -344,9 +441,11 @@ class StreamlitApp:
         # Create results dataframe
         results_data = []
         for result in results:
+            # Use original filename if available, otherwise use cv_filename
+            display_filename = result.original_filename or result.cv_filename
             results_data.append({
                 "Rank": result.rank,
-                "CV File": result.cv_filename,
+                "CV File": display_filename,
                 "Candidate": result.candidate_name or "Unknown",
                 "Overall Score": f"{result.total_score:.1%}",
                 "Summary": result.summary
@@ -359,11 +458,14 @@ class StreamlitApp:
         st.subheader("🔍 Individual Results")
         
         for result in results:
-            with st.expander(f"#{result.rank} {result.cv_filename} - {result.total_score:.1%}"):
+            # Use original filename for display
+            display_filename = result.original_filename or result.cv_filename
+            with st.expander(f"#{result.rank} {display_filename} - {result.total_score:.1%}"):
                 col1, col2 = st.columns([1, 2])
                 
                 with col1:
                     st.markdown(f"**Candidate:** {result.candidate_name or 'Unknown'}")
+                    st.markdown(f"**Original File:** {display_filename}")
                     st.markdown(f"**Overall Score:** {result.total_score:.1%}")
                     st.markdown(f"**Summary:** {result.summary}")
                 
@@ -376,6 +478,121 @@ class StreamlitApp:
                             st.markdown(f"  - Matched: {', '.join(score.matched_items[:3])}")
                             if len(score.matched_items) > 3:
                                 st.markdown(f"  - ... and {len(score.matched_items) - 3} more")
+                
+                # Show detailed CV data
+                st.markdown("---")
+                st.markdown("**📄 Detailed CV Information:**")
+                
+                # Find the corresponding CV object
+                cv_obj = None
+                for cv in st.session_state.processed_cvs:
+                    if cv.filename == result.cv_filename:
+                        cv_obj = cv
+                        break
+                
+                if cv_obj:
+                    # Basic Info
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.markdown(f"**Name:** {cv_obj.name or 'Not found'}")
+                        st.markdown(f"**Email:** {cv_obj.email or 'Not found'}")
+                        st.markdown(f"**Phone:** {cv_obj.phone or 'Not found'}")
+                        st.markdown(f"**Location:** {cv_obj.location or 'Not found'}")
+                    
+                    with col2:
+                        st.markdown(f"**LinkedIn:** {cv_obj.linkedin_url or 'Not found'}")
+                        st.markdown(f"**GitHub:** {cv_obj.github_url or 'Not found'}")
+                        st.markdown(f"**Portfolio:** {cv_obj.portfolio_url or 'Not found'}")
+                        st.markdown(f"**Experience:** {cv_obj.total_experience_years or 0} years")
+                    
+                    # Professional Summary
+                    if cv_obj.professional_summary:
+                        st.markdown("**Professional Summary:**")
+                        st.markdown(f"_{cv_obj.professional_summary}_")
+                    
+                    # Skills
+                    if cv_obj.skills:
+                        st.markdown(f"**Skills ({len(cv_obj.skills)}):**")
+                        skills_text = ", ".join(cv_obj.skills)
+                        st.markdown(f"_{skills_text}_")
+                    
+                    # Experience
+                    if cv_obj.experience:
+                        st.markdown(f"**Experience ({len(cv_obj.experience)} entries):**")
+                        for j, exp in enumerate(cv_obj.experience):
+                            st.markdown(f"**Experience {j+1}: {exp.title or 'Unknown Title'}**")
+                            with st.container():
+                                st.markdown(f"**Company:** {exp.company or 'Unknown'}")
+                                st.markdown(f"**Title:** {exp.title or 'Unknown'}")
+                                st.markdown(f"**Duration:** {exp.start_date or 'Unknown'} - {exp.end_date or 'Present'}")
+                                st.markdown(f"**Description:** {exp.description or 'No description'}")
+                                if exp.skills_used:
+                                    st.markdown(f"**Skills Used:** {', '.join(exp.skills_used)}")
+                            st.markdown("---")
+                    
+                    # Education
+                    if cv_obj.education:
+                        st.markdown(f"**Education ({len(cv_obj.education)} entries):**")
+                        for j, edu in enumerate(cv_obj.education):
+                            st.markdown(f"**Education {j+1}: {edu.degree or 'Unknown Degree'}**")
+                            with st.container():
+                                st.markdown(f"**Degree:** {edu.degree or 'Unknown'}")
+                                st.markdown(f"**Field:** {edu.field or 'Unknown'}")
+                                st.markdown(f"**Institution:** {edu.institution or 'Unknown'}")
+                                st.markdown(f"**Graduation Year:** {edu.graduation_year or 'Unknown'}")
+                                st.markdown(f"**GPA:** {edu.gpa or 'Not specified'}")
+                            st.markdown("---")
+                    
+                    # Projects
+                    if cv_obj.projects:
+                        st.markdown(f"**Projects ({len(cv_obj.projects)} entries):**")
+                        for j, proj in enumerate(cv_obj.projects):
+                            st.markdown(f"**Project {j+1}: {proj.title or 'Unknown Project'}**")
+                            with st.container():
+                                st.markdown(f"**Title:** {proj.title or 'Unknown'}")
+                                st.markdown(f"**Type:** {proj.project_type or 'Unknown'}")
+                                st.markdown(f"**Description:** {proj.description or 'No description'}")
+                                if proj.tech_stack:
+                                    st.markdown(f"**Tech Stack:** {', '.join(proj.tech_stack)}")
+                                if proj.github_url:
+                                    st.markdown(f"**GitHub:** {proj.github_url}")
+                                if proj.demo_url:
+                                    st.markdown(f"**Demo:** {proj.demo_url}")
+                            st.markdown("---")
+                    
+                    # Certifications
+                    if cv_obj.certifications:
+                        st.markdown(f"**Certifications ({len(cv_obj.certifications)} entries):**")
+                        for j, cert in enumerate(cv_obj.certifications):
+                            st.markdown(f"• **{cert.name or 'Unknown'}** - {cert.issuer or 'Unknown Issuer'}")
+                            if cert.date_earned:
+                                st.markdown(f"  - Earned: {cert.date_earned}")
+                            if cert.expiry_date:
+                                st.markdown(f"  - Expires: {cert.expiry_date}")
+                    
+                    # Awards
+                    if cv_obj.awards:
+                        st.markdown(f"**Awards ({len(cv_obj.awards)}):**")
+                        for award in cv_obj.awards:
+                            st.markdown(f"• {award}")
+                    
+                    # Publications
+                    if cv_obj.publications:
+                        st.markdown(f"**Publications ({len(cv_obj.publications)}):**")
+                        for pub in cv_obj.publications:
+                            st.markdown(f"• {pub}")
+                    
+                    # Languages
+                    if cv_obj.languages:
+                        st.markdown(f"**Languages ({len(cv_obj.languages)}):**")
+                        for lang in cv_obj.languages:
+                            st.markdown(f"• {lang}")
+                    
+                    # Raw Data (Optional)
+                    if st.checkbox(f"Show Raw Data for {display_filename}"):
+                        st.json(cv_obj.dict())
+                else:
+                    st.warning("CV object not found in session state")
         
         # Export functionality
         self._render_export_section()
@@ -406,6 +623,7 @@ class StreamlitApp:
                 row = {
                     "Rank": result.rank,
                     "CV_Filename": result.cv_filename,
+                    "Original_Filename": result.original_filename or result.cv_filename,
                     "Candidate_Name": result.candidate_name or "Unknown",
                     "Overall_Score": result.total_score,
                     "Summary": result.summary
@@ -455,6 +673,7 @@ class StreamlitApp:
                     {
                         "rank": result.rank,
                         "cv_filename": result.cv_filename,
+                        "original_filename": result.original_filename,
                         "candidate_name": result.candidate_name,
                         "total_score": result.total_score,
                         "summary": result.summary,

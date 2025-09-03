@@ -8,7 +8,12 @@ import requests
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 import pdfplumber
-from .models import CV, Experience, Education, Project, Certification
+try:
+    from sentence_transformers import SentenceTransformer
+    SENTENCE_TRANSFORMERS_AVAILABLE = True
+except ImportError:
+    SENTENCE_TRANSFORMERS_AVAILABLE = False
+from models import CV, Experience, Education, Project, Certification
 
 
 class CVProcessor:
@@ -17,9 +22,18 @@ class CVProcessor:
     def __init__(self, vllm_url: str = "http://localhost:8000", embedding_model: str = "all-MiniLM-L6-v2"):
         """Initialize the CV processor."""
         self.vllm_url = vllm_url
-        # For Phase 1, we'll use simple hash-based embeddings
-        # This avoids the sentence_transformers dependency conflict
-        self.embedding_model = None
+        # Initialize sentence transformer for real embeddings
+        if SENTENCE_TRANSFORMERS_AVAILABLE:
+            try:
+                self.embedding_model = SentenceTransformer(embedding_model)
+                print(f"✅ Loaded embedding model: {embedding_model}")
+            except Exception as e:
+                print(f"Warning: Could not load embedding model {embedding_model}: {e}")
+                print("Falling back to hash-based embeddings")
+                self.embedding_model = None
+        else:
+            print("Warning: sentence-transformers not available, using hash-based embeddings")
+            self.embedding_model = None
         
     def extract_text_from_pdf(self, pdf_path: str) -> str:
         """Extract text from PDF file."""
@@ -714,9 +728,21 @@ class CVProcessor:
         return round(total_months / 12, 1)
     
     def generate_embeddings(self, text: str) -> List[float]:
-        """Generate simple hash-based embeddings for text."""
-        # For Phase 1, we'll use a simple hash-based embedding
-        # This avoids the sentence_transformers dependency conflict
+        """Generate real embeddings using sentence transformers."""
+        if not text or not text.strip():
+            return [0.0] * 384
+        
+        # Use real embeddings if available
+        if self.embedding_model:
+            try:
+                embedding = self.embedding_model.encode(text)
+                return embedding.tolist()
+            except Exception as e:
+                print(f"Error generating embeddings: {e}")
+                # Fall back to hash-based embeddings
+                pass
+        
+        # Fallback to hash-based embeddings
         import hashlib
         text_hash = hashlib.md5(text.encode()).hexdigest()
         # Convert hash to a list of floats (simulating embeddings)
@@ -726,9 +752,72 @@ class CVProcessor:
             embedding.append(0.0)
         return embedding[:384]
     
-    def process_cv(self, pdf_path: str) -> CV:
+    def _log_extracted_data(self, filename: str, structured_data: Dict[str, Any], total_experience: float):
+        """Log extracted CV data to console for debugging."""
+        print(f"\n{'='*60}")
+        print(f"📄 PROCESSED CV: {filename}")
+        print(f"{'='*60}")
+        print(f"Name: {structured_data.get('name', 'Not found')}")
+        print(f"Email: {structured_data.get('email', 'Not found')}")
+        print(f"Phone: {structured_data.get('phone', 'Not found')}")
+        print(f"Location: {structured_data.get('location', 'Not found')}")
+        print(f"LinkedIn: {structured_data.get('linkedin_url', 'Not found')}")
+        print(f"GitHub: {structured_data.get('github_url', 'Not found')}")
+        print(f"Portfolio: {structured_data.get('portfolio_url', 'Not found')}")
+        print(f"Experience: {total_experience} years")
+        print(f"Professional Summary: {structured_data.get('professional_summary', 'Not found')}")
+        
+        # Skills
+        skills = structured_data.get('skills', [])
+        print(f"Skills ({len(skills)}): {', '.join(skills) if skills else 'None found'}")
+        
+        # Experience
+        experience = structured_data.get('experience', [])
+        print(f"Experience Entries ({len(experience)}):")
+        for i, exp in enumerate(experience):
+            print(f"  {i+1}. {exp.get('title', 'Unknown')} at {exp.get('company', 'Unknown')} ({exp.get('start_date', 'Unknown')} - {exp.get('end_date', 'Present')})")
+            if exp.get('description'):
+                print(f"     Description: {exp.get('description', '')[:100]}...")
+        
+        # Education
+        education = structured_data.get('education', [])
+        print(f"Education Entries ({len(education)}):")
+        for i, edu in enumerate(education):
+            print(f"  {i+1}. {edu.get('degree', 'Unknown')} in {edu.get('field', 'Unknown')} from {edu.get('institution', 'Unknown')} ({edu.get('graduation_year', 'Unknown')})")
+        
+        # Projects
+        projects = structured_data.get('projects', [])
+        print(f"Projects ({len(projects)}):")
+        for i, proj in enumerate(projects):
+            print(f"  {i+1}. {proj.get('title', 'Unknown')} - {proj.get('description', '')[:100]}...")
+        
+        # Certifications
+        certifications = structured_data.get('certifications', [])
+        print(f"Certifications ({len(certifications)}):")
+        for i, cert in enumerate(certifications):
+            print(f"  {i+1}. {cert.get('name', 'Unknown')} from {cert.get('issuer', 'Unknown')}")
+        
+        # Awards
+        awards = structured_data.get('awards', [])
+        if awards:
+            print(f"Awards ({len(awards)}): {', '.join(awards)}")
+        
+        # Publications
+        publications = structured_data.get('publications', [])
+        if publications:
+            print(f"Publications ({len(publications)}): {', '.join(publications)}")
+        
+        # Languages
+        languages = structured_data.get('languages', [])
+        if languages:
+            print(f"Languages ({len(languages)}): {', '.join(languages)}")
+        
+        print(f"{'='*60}\n")
+    
+    def process_cv(self, pdf_path: str, original_filename: Optional[str] = None) -> CV:
         """Process a CV file and return structured data."""
-        filename = os.path.basename(pdf_path)
+        # Use original filename if provided, otherwise use the PDF path basename
+        filename = original_filename if original_filename else os.path.basename(pdf_path)
         
         # Extract text from PDF
         cv_text = self.extract_text_from_pdf(pdf_path)
@@ -812,8 +901,12 @@ class CVProcessor:
         if final_email and any(placeholder in final_email.lower() for placeholder in ['actual_email', 'example', 'placeholder']):
             final_email = None
         
+        # Log extracted data to console
+        self._log_extracted_data(original_filename or os.path.basename(pdf_path), structured_data, total_experience)
+        
         return CV(
             filename=filename,
+            original_filename=original_filename,
             full_text=cv_text,
             name=final_name,
             email=final_email,

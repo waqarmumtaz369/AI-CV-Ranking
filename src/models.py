@@ -122,7 +122,8 @@ class Certification(BaseModel):
 
 class CV(BaseModel):
     """CV/Resume model with extracted information."""
-    filename: str = Field(..., description="Original filename")
+    filename: str = Field(..., description="Current filename (may be temporary)")
+    original_filename: Optional[str] = Field(None, description="Original uploaded filename")
     full_text: str = Field(..., description="Full extracted text")
     name: Optional[str] = Field(None, description="Candidate name")
     email: Optional[str] = Field(None, description="Email address")
@@ -161,6 +162,7 @@ class MatchingScore(BaseModel):
 class MatchingResult(BaseModel):
     """Final matching result for a CV against a job description."""
     cv_filename: str = Field(..., description="CV filename")
+    original_filename: Optional[str] = Field(None, description="Original uploaded filename")
     candidate_name: Optional[str] = Field(None, description="Candidate name")
     total_score: float = Field(..., ge=0.0, le=1.0, description="Overall matching score")
     individual_scores: List[MatchingScore] = Field(..., description="Individual component scores")

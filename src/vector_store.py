@@ -6,7 +6,12 @@ import uuid
 from typing import List, Dict, Any, Optional, Tuple
 import chromadb
 from chromadb.config import Settings
-from .models import CV, JobDescription
+try:
+    from sentence_transformers import SentenceTransformer
+    SENTENCE_TRANSFORMERS_AVAILABLE = True
+except ImportError:
+    SENTENCE_TRANSFORMERS_AVAILABLE = False
+from models import CV, JobDescription
 
 
 class VectorStore:
@@ -15,9 +20,18 @@ class VectorStore:
     def __init__(self, persist_directory: str = "./chroma_db", embedding_model: str = "all-MiniLM-L6-v2"):
         """Initialize the vector store."""
         self.persist_directory = persist_directory
-        # For Phase 1, we'll use simple hash-based embeddings
-        # This avoids the sentence_transformers dependency conflict
-        self.embedding_model = None
+        # Initialize sentence transformer for real embeddings
+        if SENTENCE_TRANSFORMERS_AVAILABLE:
+            try:
+                self.embedding_model = SentenceTransformer(embedding_model)
+                print(f"✅ Loaded embedding model: {embedding_model}")
+            except Exception as e:
+                print(f"Warning: Could not load embedding model {embedding_model}: {e}")
+                print("Falling back to hash-based embeddings")
+                self.embedding_model = None
+        else:
+            print("Warning: sentence-transformers not available, using hash-based embeddings")
+            self.embedding_model = None
         
         # Initialize ChromaDB client
         self.client = chromadb.PersistentClient(
@@ -39,6 +53,31 @@ class VectorStore:
             metadata={"description": "Job description embeddings and metadata"}
         )
     
+    def generate_embeddings(self, text: str) -> List[float]:
+        """Generate real embeddings using sentence transformers."""
+        if not text or not text.strip():
+            return [0.0] * 384
+        
+        # Use real embeddings if available
+        if self.embedding_model:
+            try:
+                embedding = self.embedding_model.encode(text)
+                return embedding.tolist()
+            except Exception as e:
+                print(f"Error generating embeddings: {e}")
+                # Fall back to hash-based embeddings
+                pass
+        
+        # Fallback to hash-based embeddings
+        import hashlib
+        text_hash = hashlib.md5(text.encode()).hexdigest()
+        # Convert hash to a list of floats (simulating embeddings)
+        embedding = [float(int(text_hash[i:i+2], 16)) / 255.0 for i in range(0, min(32, len(text_hash)), 2)]
+        # Pad or truncate to 384 dimensions (standard embedding size)
+        while len(embedding) < 384:
+            embedding.append(0.0)
+        return embedding[:384]
+    
     def add_cv(self, cv: CV) -> str:
         """Add a CV to the vector store."""
         cv_id = str(uuid.uuid4())
@@ -46,6 +85,7 @@ class VectorStore:
         # Prepare metadata
         metadata = {
             "filename": cv.filename,
+            "original_filename": cv.original_filename or cv.filename,
             "name": cv.name or "Unknown",
             "email": cv.email or "",
             "phone": cv.phone or "",
@@ -68,7 +108,7 @@ class VectorStore:
         
         # Add experience embeddings
         if cv.experience_embeddings:
-            experience_text = " ".join([exp.description for exp in cv.experience])
+            experience_text = " ".join([exp.description or "" for exp in cv.experience])
             self.cv_collection.add(
                 ids=[f"{cv_id}_experience"],
                 embeddings=[cv.experience_embeddings],
@@ -78,12 +118,22 @@ class VectorStore:
         
         # Add education embeddings
         if cv.education_embeddings:
-            education_text = " ".join([f"{edu.degree} {edu.field}" for edu in cv.education])
+            education_text = " ".join([f"{edu.degree or ''} {edu.field or ''}" for edu in cv.education])
             self.cv_collection.add(
                 ids=[f"{cv_id}_education"],
                 embeddings=[cv.education_embeddings],
                 documents=[education_text],
                 metadatas=[{**metadata, "section": "education"}]
+            )
+        
+        # Add projects embeddings
+        if cv.projects_embeddings:
+            projects_text = " ".join([f"{proj.title or ''} {proj.description or ''}" for proj in cv.projects])
+            self.cv_collection.add(
+                ids=[f"{cv_id}_projects"],
+                embeddings=[cv.projects_embeddings],
+                documents=[projects_text],
+                metadatas=[{**metadata, "section": "projects"}]
             )
         
         return cv_id
@@ -143,13 +193,21 @@ class VectorStore:
             where={"section": "education"}
         )
         
+        # Search projects
+        projects_results = self.cv_collection.query(
+            query_embeddings=[job.embeddings],
+            n_results=n_results,
+            where={"section": "projects"}
+        )
+        
         # Combine and deduplicate results
         all_results = {}
         
         for section, section_results in [
             ("skills", skills_results),
             ("experience", experience_results),
-            ("education", education_results)
+            ("education", education_results),
+            ("projects", projects_results)
         ]:
             if section_results["ids"] and section_results["ids"][0]:
                 for i, cv_id in enumerate(section_results["ids"][0]):
