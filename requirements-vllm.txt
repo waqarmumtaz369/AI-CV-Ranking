@@ -1,0 +1,4 @@
+# vLLM installation using uv
+# Install with: uv pip install vllm --torch-backend=auto
+# This file is for reference - actual installation uses uv commands
+vllm

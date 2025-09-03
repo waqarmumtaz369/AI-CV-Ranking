@@ -2,8 +2,8 @@
 export CUDA_VISIBLE_DEVICES=0
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 
-# Activate virtual environment
-#source .venv/bin/activate
+# Activate vLLM virtual environment
+source vllm-env/bin/activate
 
 vllm serve Qwen/Qwen2.5-0.5B \
   --gpu-memory-utilization 0.7 \
