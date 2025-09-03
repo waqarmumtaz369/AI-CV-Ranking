@@ -8,7 +8,7 @@ Our main foucs is to deliver a working prototype with enough progress that can b
 - vllm is already installed and feel free to add required packages when needed
 - Use streamlit for UI prototyping 
 - Use chroma db for all the vector operations 
-- Use local model servved through vllm currently it's QWEN 
+- Use local model served through vllm currently it's QWEN (run_vllm.sh can serve the model)
 
 ## UI Flow
 - A Title

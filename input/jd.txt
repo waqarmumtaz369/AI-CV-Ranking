@@ -1,0 +1,17 @@
+AI Engineer
+
+Requirements
+
+Experience: 2–3 years in AI, machine learning, or a related field OR a strong academic background with notable AI/ML projects
+Strong understanding of algorithms, data structures, and statistical concepts
+Proficiency in Python (or similar programming languages)
+Familiarity with machine learning frameworks such as TensorFlow, PyTorch, or Scikit-learn (preferred)
+Strong analytical thinking, problem-solving skills, and curiosity for new challenges
+Ability to work independently, learn quickly, and adapt to evolving technologies
+Genuine passion for AI and its transformative potential for businesses. 
+
+Bonus Skills (Preferred, Not Required)
+
+Experience with Natural Language Processing, Computer Vision, or Reinforcement Learning
+Knowledge of cloud services (AWS, GCP, or Azure) and ML deployment pipelines
+Familiarity with MLOps practices and tools. 
