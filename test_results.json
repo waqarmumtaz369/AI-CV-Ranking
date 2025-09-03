@@ -1,0 +1,1300 @@
+{
+  "test_timestamp": "2025-09-03T16:45:07.104616",
+  "job_description": {
+    "title": "AI Engineer",
+    "experience_years": 2,
+    "education_level": null,
+    "required_skills": [
+      "knowledge",
+      "notable",
+      "familiarity",
+      "deployment",
+      "pipelines",
+      "pytorch",
+      "computer",
+      "understanding",
+      "related",
+      "vision",
+      "languages",
+      "python",
+      "statistical",
+      "requirements",
+      "azure",
+      "background",
+      "frameworks",
+      "such",
+      "Python",
+      "scikit",
+      "cloud",
+      "machine learning",
+      "learning",
+      "projects",
+      "processing",
+      "structures",
+      "language",
+      "data",
+      "practices",
+      "services",
+      "mlops",
+      "machine",
+      "tools",
+      "similar",
+      "gcp",
+      "Azure",
+      "aws",
+      "field",
+      "algorithms",
+      "TensorFlow",
+      "concepts",
+      "PyTorch",
+      "academic",
+      "Scikit-learn",
+      "proficiency",
+      "tensorflow",
+      "AWS",
+      "GCP",
+      "natural",
+      "reinforcement",
+      "programming"
+    ],
+    "preferred_skills": [
+      "knowledge",
+      "familiarity",
+      "deployment",
+      "pipelines",
+      "pytorch",
+      "computer",
+      "vision",
+      "azure",
+      "frameworks",
+      "such",
+      "scikit",
+      "cloud",
+      "machine learning",
+      "learning",
+      "processing",
+      "language",
+      "practices",
+      "services",
+      "mlops",
+      "machine",
+      "gcp",
+      "tools",
+      "Azure",
+      "aws",
+      "TensorFlow",
+      "PyTorch",
+      "Scikit-learn",
+      "tensorflow",
+      "AWS",
+      "GCP",
+      "natural",
+      "reinforcement"
+    ],
+    "keywords": [
+      "pytorch",
+      "related",
+      "required",
+      "businesses",
+      "statistical",
+      "problem",
+      "challenges",
+      "passion",
+      "projects",
+      "independently",
+      "services",
+      "machine",
+      "similar",
+      "new",
+      "gcp",
+      "quickly",
+      "TensorFlow",
+      "concepts",
+      "academic",
+      "proficiency",
+      "GCP",
+      "reinforcement",
+      "ability",
+      "notable",
+      "understanding",
+      "languages",
+      "curiosity",
+      "technologies",
+      "azure",
+      "frameworks",
+      "not",
+      "ML",
+      "cloud",
+      "data",
+      "bonus",
+      "years",
+      "experience",
+      "PyTorch",
+      "Scikit-learn",
+      "analytical",
+      "AWS",
+      "natural",
+      "preferred",
+      "strong",
+      "deployment",
+      "vision",
+      "its",
+      "python",
+      "skills",
+      "thinking",
+      "such",
+      "scikit",
+      "adapt",
+      "machine learning",
+      "processing",
+      "language",
+      "practices",
+      "tools",
+      "Azure",
+      "aws",
+      "tensorflow",
+      "transformative",
+      "knowledge",
+      "familiarity",
+      "pipelines",
+      "engineer",
+      "computer",
+      "evolving",
+      "AI",
+      "requirements",
+      "background",
+      "genuine",
+      "Python",
+      "learning",
+      "potential",
+      "structures",
+      "work",
+      "mlops",
+      "field",
+      "algorithms",
+      "learn",
+      "solving",
+      "programming"
+    ]
+  },
+  "cv_processing_stats": {
+    "name_extracted": 38,
+    "email_extracted": 36,
+    "phone_extracted": 35,
+    "linkedin_extracted": 4,
+    "github_extracted": 4,
+    "location_extracted": 25,
+    "summary_extracted": 29,
+    "skills_extracted": 37,
+    "experience_extracted": 33,
+    "education_extracted": 38,
+    "projects_extracted": 37,
+    "certifications_extracted": 16,
+    "awards_extracted": 11,
+    "languages_extracted": 27
+  },
+  "matching_results": [
+    {
+      "rank": 1,
+      "cv_filename": "ranagulraiz_laravel_cv.pdf",
+      "candidate_name": "RANA GULRAIZ ASIF",
+      "total_score": 0.7482579943835492,
+      "summary": "Good match (74.8%). Strongest area: experience (100.0%). Area for improvement: keywords (26.5%). Experience requirement met (3787.5 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.554379925717909,
+          "details": "Matched 62 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 3787.5 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.26506024096385544,
+          "details": "Matched 22 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "cv_filename": "Hassaan Zakria Resume.pdf",
+      "candidate_name": "HASSAAN ZAKRIA",
+      "total_score": 0.7277710227632302,
+      "summary": "Good match (72.8%). Strongest area: experience (100.0%). Area for improvement: keywords (44.6%). Experience requirement met (4.0 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.4579817737755451,
+          "details": "Matched 54 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 4.0 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.4457831325301205,
+          "details": "Matched 37 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "cv_filename": "Ahmed_Arif_Resume(G).pdf",
+      "candidate_name": "AHMED ARIF RASUL",
+      "total_score": 0.6931344304528523,
+      "summary": "Good match (69.3%). Strongest area: experience (100.0%). Area for improvement: keywords (28.9%). Experience requirement met (1798.0 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.41054691950562416,
+          "details": "Matched 56 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 1798.0 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.2891566265060241,
+          "details": "Matched 24 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 4,
+      "cv_filename": "Copy of Ubaid Riaz (3).pdf",
+      "candidate_name": "UBAID RIAZ",
+      "total_score": 0.6919889477288814,
+      "summary": "Good match (69.2%). Strongest area: experience (100.0%). Area for improvement: keywords (34.9%). Experience requirement met (19.2 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.3926229717318419,
+          "details": "Matched 53 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 19.2 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.3493975903614458,
+          "details": "Matched 29 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 5,
+      "cv_filename": "Ali_Hassan_MERN.pdf",
+      "candidate_name": "ALI HASSAN",
+      "total_score": 0.6662649093474821,
+      "summary": "Good match (66.6%). Strongest area: experience (100.0%). Area for improvement: skills (32.5%). Experience requirement met (13086.0 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.32530082758557244,
+          "details": "Matched 45 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 13086.0 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.3614457831325301,
+          "details": "Matched 30 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 6,
+      "cv_filename": "MAhmedKhalid_CV.pdf",
+      "candidate_name": "MUHAMMAD AHMED KHALID",
+      "total_score": 0.6506830909070457,
+      "summary": "Good match (65.1%). Strongest area: experience (100.0%). Area for improvement: keywords (25.3%). Experience requirement met (30029.0 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.3134547152194212,
+          "details": "Matched 48 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 30029.0 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.25301204819277107,
+          "details": "Matched 21 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 7,
+      "cv_filename": "Ali Haider.pdf",
+      "candidate_name": "Ali Haider",
+      "total_score": 0.6486715380101931,
+      "summary": "Good match (64.9%). Strongest area: experience (100.0%). Area for improvement: keywords (26.5%). Experience requirement met (3774.0 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.3054137847845184,
+          "details": "Matched 52 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 3774.0 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.26506024096385544,
+          "details": "Matched 22 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 8,
+      "cv_filename": "Musharab Sabeen Resume SE.pdf",
+      "candidate_name": "MUSHARAB SABEEN",
+      "total_score": 0.6364477088714731,
+      "summary": "Good match (63.6%). Strongest area: experience (100.0%). Area for improvement: keywords (24.1%). Experience requirement met (8.0 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.2808783083232606,
+          "details": "Matched 37 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 8.0 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.24096385542168675,
+          "details": "Matched 20 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 9,
+      "cv_filename": "Arslan Irshad.pdf",
+      "candidate_name": "ARSLAN IRSHAD",
+      "total_score": 0.6346275192353652,
+      "summary": "Good match (63.5%). Strongest area: experience (100.0%). Area for improvement: skills (26.7%). Experience requirement met (2331.0 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.26729168965467803,
+          "details": "Matched 44 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 2331.0 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.27710843373493976,
+          "details": "Matched 23 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 10,
+      "cv_filename": "sitara_s resume.pdf",
+      "candidate_name": "Sitara Shamshad",
+      "total_score": 0.6337215822601773,
+      "summary": "Good match (63.4%). Strongest area: experience (100.0%). Area for improvement: keywords (21.7%). Experience requirement met (18994.0 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.28008708818056327,
+          "details": "Matched 45 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 18994.0 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.21686746987951808,
+          "details": "Matched 18 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 11,
+      "cv_filename": "Javaria Iqbal Ressume.pdf",
+      "candidate_name": "Javaria Iqbal",
+      "total_score": 0.6273215244435358,
+      "summary": "Good match (62.7%). Strongest area: experience (100.0%). Area for improvement: skills (23.7%). Experience requirement met (2158.0 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.23697850990401997,
+          "details": "Matched 39 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 2158.0 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.3253012048192771,
+          "details": "Matched 27 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 12,
+      "cv_filename": "Hussain_Ahmad SQA.pdf",
+      "candidate_name": "Hussain Ahmad",
+      "total_score": 0.6227600919353691,
+      "summary": "Good match (62.3%). Strongest area: experience (100.0%). Area for improvement: keywords (19.3%). Experience requirement met (4140.0 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.2587074587540849,
+          "details": "Matched 39 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 4140.0 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.1927710843373494,
+          "details": "Matched 16 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 13,
+      "cv_filename": "Muhammad Ahmed - Resume.pdf",
+      "candidate_name": "MUHAMMAD AHMED",
+      "total_score": 0.6176874317440804,
+      "summary": "Good match (61.8%). Strongest area: experience (100.0%). Area for improvement: keywords (22.9%). Experience requirement met (20.2 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.23698966369755003,
+          "details": "Matched 32 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 20.2 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.2289156626506024,
+          "details": "Matched 19 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 14,
+      "cv_filename": "Abdullah_s Resume.pdf",
+      "candidate_name": "BSCS MySQL",
+      "total_score": 0.5927645042570628,
+      "summary": "Fair match (59.3%). Strongest area: experience (100.0%). Area for improvement: keywords (14.5%). Experience requirement met (6.0 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.1957666823294038,
+          "details": "Matched 30 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 6.0 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.14457831325301204,
+          "details": "Matched 12 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 15,
+      "cv_filename": "Sheikh Abdulrehman CV 1.pdf",
+      "candidate_name": "Sheikh Abdulrehman",
+      "total_score": 0.5825367651442478,
+      "summary": "Fair match (58.3%). Strongest area: experience (100.0%). Area for improvement: keywords (14.5%). Experience requirement met (9579.0 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.17019733454736624,
+          "details": "Matched 28 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 9579.0 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.14457831325301204,
+          "details": "Matched 12 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 16,
+      "cv_filename": "Ammar Atif-QA.pdf",
+      "candidate_name": "Core Competencies",
+      "total_score": 0.5729410207085616,
+      "summary": "Fair match (57.3%). Strongest area: experience (100.0%). Area for improvement: keywords (10.8%). Experience requirement met (16.0 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.1552441180364639,
+          "details": "Matched 22 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 16.0 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.10843373493975904,
+          "details": "Matched 9 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 17,
+      "cv_filename": "CV_Sr.SQA Engineer(arslan arif) - Arsal InfoTech (1).pdf",
+      "candidate_name": "M.Arslan Arif Gorssi",
+      "total_score": 0.5622317027610289,
+      "summary": "Fair match (56.2%). Strongest area: education (100.0%). Area for improvement: keywords (21.7%). Experience gap: 0.2 years short.",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.3113623894326922,
+          "details": "Matched 50 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 0.7200000000000001,
+          "details": "CV has 1.8 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.21686746987951808,
+          "details": "Matched 18 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 18,
+      "cv_filename": "Tehseen-Ajmal-res.pdf",
+      "candidate_name": "Tehseen Ajmal",
+      "total_score": 0.5621190212260376,
+      "summary": "Fair match (56.2%). Strongest area: experience (100.0%). Area for improvement: skills (9.2%). Experience requirement met (24.0 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.09204454101690104,
+          "details": "Matched 13 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 24.0 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.25301204819277107,
+          "details": "Matched 21 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 19,
+      "cv_filename": "Huzaifa asif resume.pdf",
+      "candidate_name": "HUZAIFA ASIF",
+      "total_score": 0.5581428083647488,
+      "summary": "Fair match (55.8%). Strongest area: experience (100.0%). Area for improvement: skills (10.6%). Experience requirement met (33.0 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.1062003944058478,
+          "details": "Matched 18 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 33.0 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.1566265060240964,
+          "details": "Matched 13 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 20,
+      "cv_filename": "Haseeb Resume.pdf",
+      "candidate_name": "Motivated and dedicated Computer",
+      "total_score": 0.5499156919713288,
+      "summary": "Fair match (55.0%). Strongest area: experience (100.0%). Area for improvement: skills (7.7%). Experience requirement met (4.0 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.07659645884398442,
+          "details": "Matched 14 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 4.0 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.1927710843373494,
+          "details": "Matched 16 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 21,
+      "cv_filename": "Jawwad CV 2025.pdf",
+      "candidate_name": "JAWWAD NASIR QURESHI",
+      "total_score": 0.5270072772292178,
+      "summary": "Fair match (52.7%). Strongest area: experience (100.0%). Area for improvement: skills (3.7%). Experience requirement met (37.5 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.03739771114533321,
+          "details": "Matched 7 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 37.5 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.12048192771084337,
+          "details": "Matched 10 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 22,
+      "cv_filename": "AMNA ALI CV.pdf",
+      "candidate_name": "AMNA ALI",
+      "total_score": 0.5048192771084339,
+      "summary": "Fair match (50.5%). Strongest area: experience (100.0%). Area for improvement: skills (0.0%). Experience requirement met (54.0 years).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.0,
+          "details": "Matched 0 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 1.0,
+          "details": "CV has 54.0 years (required: 2)"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.04819277108433735,
+          "details": "Matched 4 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 23,
+      "cv_filename": "Ahmed Basharat (2) (1).pdf",
+      "candidate_name": "organizational success.",
+      "total_score": 0.44031730455543355,
+      "summary": "Fair match (44.0%). Strongest area: education (100.0%). Area for improvement: experience (0.0%).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.5285041047620777,
+          "details": "Matched 58 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 0.0,
+          "details": "No experience information found in CV"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.2891566265060241,
+          "details": "Matched 24 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 24,
+      "cv_filename": "Asfa_Rehman_CV.pdf",
+      "candidate_name": "evolving best practices.",
+      "total_score": 0.43426229459964394,
+      "summary": "Fair match (43.4%). Strongest area: education (100.0%). Area for improvement: experience (0.0%).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.5163786280653747,
+          "details": "Matched 59 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 0.0,
+          "details": "No experience information found in CV"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.27710843373493976,
+          "details": "Matched 23 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 25,
+      "cv_filename": "Muaz Cv.pdf",
+      "candidate_name": "Muaz Najam",
+      "total_score": 0.4041097994526678,
+      "summary": "Fair match (40.4%). Strongest area: education (100.0%). Area for improvement: experience (0.0%).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.4831660648967295,
+          "details": "Matched 54 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 0.0,
+          "details": "No experience information found in CV"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.10843373493975904,
+          "details": "Matched 9 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 26,
+      "cv_filename": "AbdulHadiCV-2.pdf",
+      "candidate_name": "ABDUL HADI BUTT",
+      "total_score": 0.4015980098498656,
+      "summary": "Fair match (40.2%). Strongest area: education (100.0%). Area for improvement: experience (0.0%).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.4196576752270735,
+          "details": "Matched 50 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 0.0,
+          "details": "No experience information found in CV"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.3373493975903614,
+          "details": "Matched 28 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 27,
+      "cv_filename": "Muhammad Ahmad-2.pdf",
+      "candidate_name": "Muhammad Ahmad",
+      "total_score": 0.38317416838349955,
+      "summary": "Poor match (38.3%). Strongest area: education (100.0%). Area for improvement: experience (0.0%).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.3826342161394716,
+          "details": "Matched 57 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 0.0,
+          "details": "No experience information found in CV"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.30120481927710846,
+          "details": "Matched 25 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 28,
+      "cv_filename": "Abubakar Shoaib.pdf",
+      "candidate_name": "ABUBAKAR SHOAIB",
+      "total_score": 0.37512923976674795,
+      "summary": "Poor match (37.5%). Strongest area: education (100.0%). Area for improvement: experience (0.0%).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.38059418375421916,
+          "details": "Matched 62 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 0.0,
+          "details": "No experience information found in CV"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.2289156626506024,
+          "details": "Matched 19 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 29,
+      "cv_filename": "ABDULLAH AYYAZ - Resume-2.pdf",
+      "candidate_name": "ABDULLAH AYYAZ",
+      "total_score": 0.37028842056890054,
+      "summary": "Poor match (37.0%). Strongest area: education (100.0%). Area for improvement: experience (0.0%).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.35945599118128735,
+          "details": "Matched 51 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 0.0,
+          "details": "No experience information found in CV"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.26506024096385544,
+          "details": "Matched 22 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 30,
+      "cv_filename": "Muhammad Waqas Resume.pdf",
+      "candidate_name": "Master of Computer Science",
+      "total_score": 0.3625694381348502,
+      "summary": "Poor match (36.3%). Strongest area: education (100.0%). Area for improvement: experience (0.0%).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.3491946796744747,
+          "details": "Matched 53 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 0.0,
+          "details": "No experience information found in CV"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.2289156626506024,
+          "details": "Matched 19 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 31,
+      "cv_filename": "Umair_s_resume ML.pdf",
+      "candidate_name": "Umair Anjum",
+      "total_score": 0.35035048720825884,
+      "summary": "Poor match (35.0%). Strongest area: education (100.0%). Area for improvement: experience (0.0%).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.3367195915146229,
+          "details": "Matched 58 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 0.0,
+          "details": "No experience information found in CV"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.1566265060240964,
+          "details": "Matched 13 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 32,
+      "cv_filename": "Ahmad Raza.pdf",
+      "candidate_name": "Ahmad Raza",
+      "total_score": 0.3141121221021513,
+      "summary": "Poor match (31.4%). Strongest area: education (100.0%). Area for improvement: experience (0.0%).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.19491885947224544,
+          "details": "Matched 25 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 0.0,
+          "details": "No experience information found in CV"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.3614457831325301,
+          "details": "Matched 30 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 33,
+      "cv_filename": "Bilal_Iftikhar_Resume_Senior_Software_Engineer.pdf",
+      "candidate_name": "Muhammad Bilal",
+      "total_score": 0.31324539808507723,
+      "summary": "Poor match (31.3%). Strongest area: education (100.0%). Area for improvement: experience (0.0%).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.21383638677895797,
+          "details": "Matched 35 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 0.0,
+          "details": "No experience information found in CV"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.27710843373493976,
+          "details": "Matched 23 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 34,
+      "cv_filename": "Mirza Umer Ikram Computer Science .pdf",
+      "candidate_name": "MIRZA UMER IKRAM",
+      "total_score": 0.29326248001110927,
+      "summary": "Poor match (29.3%). Strongest area: education (100.0%). Area for improvement: experience (0.0%).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.16689113978680917,
+          "details": "Matched 29 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 0.0,
+          "details": "No experience information found in CV"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.26506024096385544,
+          "details": "Matched 22 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 35,
+      "cv_filename": "Zain_CV.pdf",
+      "candidate_name": "Quality Assurance Engineer",
+      "total_score": 0.28877357327996084,
+      "summary": "Poor match (28.9%). Strongest area: education (100.0%). Area for improvement: experience (0.0%).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.17072911392279344,
+          "details": "Matched 25 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 0.0,
+          "details": "No experience information found in CV"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.20481927710843373,
+          "details": "Matched 17 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 36,
+      "cv_filename": "Front-End Engineer Application _Mid Level.pdf",
+      "candidate_name": "component-based architectures",
+      "total_score": 0.2700722303131943,
+      "summary": "Poor match (27.0%). Strongest area: education (100.0%). Area for improvement: experience (0.0%).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.10590346734925049,
+          "details": "Matched 17 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 0.0,
+          "details": "No experience information found in CV"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.27710843373493976,
+          "details": "Matched 23 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 37,
+      "cv_filename": "Noman Khaliq - Unity Game Developer.pdf",
+      "candidate_name": "NOMAN KHALIQ",
+      "total_score": 0.24760892308730725,
+      "summary": "Poor match (24.8%). Strongest area: education (100.0%). Area for improvement: experience (0.0%).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.07384158482670176,
+          "details": "Matched 12 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 0.0,
+          "details": "No experience information found in CV"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.18072289156626506,
+          "details": "Matched 15 out of 83 keywords"
+        }
+      ]
+    },
+    {
+      "rank": 38,
+      "cv_filename": "CV_HassanHaris.pdf",
+      "candidate_name": "Hassan Haris",
+      "total_score": 0.24457127302096318,
+      "summary": "Poor match (24.5%). Strongest area: education (100.0%). Area for improvement: experience (0.0%).",
+      "individual_scores": [
+        {
+          "component": "skills",
+          "score": 0.0722715560463837,
+          "details": "Matched 13 out of 83 required skills"
+        },
+        {
+          "component": "experience",
+          "score": 0.0,
+          "details": "No experience information found in CV"
+        },
+        {
+          "component": "education",
+          "score": 1.0,
+          "details": "No education requirement specified"
+        },
+        {
+          "component": "keywords",
+          "score": 0.1566265060240964,
+          "details": "Matched 13 out of 83 keywords"
+        }
+      ]
+    }
+  ]
+}

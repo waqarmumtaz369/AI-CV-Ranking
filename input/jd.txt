@@ -1,17 +1,42 @@
-AI Engineer
+Gen-AI Engineer
 
+A skilled Machine Learning Engineer with hands-on experience in developing and deploying in-house machine learning models for business-critical applications. Proficient in model lifecycle management, from data preprocessing and feature engineering to training, evaluation, and deployment using scalable frameworks.
+Job Description
+ 
+Build autonomous AI-driven agents for tasks such as reasoning, decision-making, automation, and contextual understanding.
+ 
+Customize and deploy GPT, LLaMA, Claude, Mistral, and other foundation models to solve industry-specific challenges.
+ 
+Design scalable, production-ready AI workflows using Python, LangChain, LlamaIndex, OpenAI functions, and AutoGPT.
+ 
+Enhance AI agents with retrieval-augmented generation (RAG), vector databases (FAISS, Pinecone, Weaviate, ChromaDB), and knowledge graphs.
+ 
+Work with text, images, audio, and structured data to create multimodal AI applications.
+ 
+Implement reinforcement learning, agentic workflows, and action-planning techniques to enhance AI autonomy.
+ 
+Optimize and deploy models on cloud platforms (AWS, Azure, GCP) and ensure efficiency in a microservices-based architecture.
+ 
+Leverage few-shot learning, prompt chaining, and tool-use APIs to improve AI reasoning capabilities.
+ 
+Develop responsible AI solutions by addressing bias, explainability, and security concerns.
+ 
+ 
 Requirements
-
-Experience: 2–3 years in AI, machine learning, or a related field OR a strong academic background with notable AI/ML projects
-Strong understanding of algorithms, data structures, and statistical concepts
-Proficiency in Python (or similar programming languages)
-Familiarity with machine learning frameworks such as TensorFlow, PyTorch, or Scikit-learn (preferred)
-Strong analytical thinking, problem-solving skills, and curiosity for new challenges
-Ability to work independently, learn quickly, and adapt to evolving technologies
-Genuine passion for AI and its transformative potential for businesses. 
-
-Bonus Skills (Preferred, Not Required)
-
-Experience with Natural Language Processing, Computer Vision, or Reinforcement Learning
-Knowledge of cloud services (AWS, GCP, or Azure) and ML deployment pipelines
-Familiarity with MLOps practices and tools. 
+Proven experience developing GenAI-powered applications and AI agents.
+ 
+Strong proficiency in Python and AI/ML frameworks (TensorFlow, PyTorch, Hugging Face, LangChain, LlamaIndex, OpenAI API).
+ 
+Hands-on expertise in LLM fine-tuning, model adaptation, and prompt engineering.
+ 
+Familiarity with vector databases (FAISS, Pinecone, Weaviate, ChromaDB) and knowledge retrieval techniques.
+ 
+Experience integrating AI with APIs, automation frameworks, and microservices.
+ 
+Working knowledge of cloud-based AI deployment (AWS, Azure, GCP).
+ 
+Understanding of NLP, reinforcement learning, and multi-agent architectures.
+ 
+Strong problem-solving skills, ability to work independently, and in a collaborative team environment.
+ 
+Excellent communication skills with a passion for AI-driven innovation.

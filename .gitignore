@@ -215,3 +215,6 @@ context/
 
 # input files
 input/
+input/*
+input/CVs/*
+input/CVs-misc/*

@@ -187,14 +187,14 @@ class StreamlitApp:
                 "Choose CV files (PDF only)",
                 type=['pdf'],
                 accept_multiple_files=True,
-                help="Upload multiple PDF CV files (max 10 for Phase 1)"
+                help="Upload multiple PDF CV files (max 50)"
             )
             
             if uploaded_files:
-                # Limit to 10 files for Phase 1
-                if len(uploaded_files) > 10:
-                    st.warning(f"⚠️ Limiting to first 10 files (Phase 1 limit)")
-                    uploaded_files = uploaded_files[:10]
+                # Limit to 50 files
+                if len(uploaded_files) > 50:
+                    st.warning(f"⚠️ Limiting to first 50 files")
+                    uploaded_files = uploaded_files[:50]
                 
                 st.info(f"📄 {len(uploaded_files)} file(s) selected")
                 

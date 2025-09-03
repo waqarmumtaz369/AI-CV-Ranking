@@ -26,7 +26,7 @@ if ! curl -s http://localhost:8000/health > /dev/null 2>&1; then
     echo ""
     echo "   Or run in another terminal:"
     echo "   source .venv/bin/activate"
-    echo "   vllm serve Qwen/Qwen3-0.6B --gpu-memory-utilization 0.7 --max-model-len 3072 --max-num-seqs 6 --host 0.0.0.0 --port 8000"
+    echo "   vllm serve Qwen/Qwen2.5-0.5B --gpu-memory-utilization 0.7 --max-model-len 3072 --max-num-seqs 6 --host 0.0.0.0 --port 8000"
     echo ""
     read -p "Continue anyway? (y/N): " -n 1 -r
     echo

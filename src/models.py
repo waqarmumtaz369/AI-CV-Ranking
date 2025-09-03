@@ -1,8 +1,8 @@
 """
 Pydantic models for the CV ranking system.
 """
-from typing import List, Optional, Dict, Any
-from pydantic import BaseModel, Field, validator
+from typing import List, Optional, Dict, Any, Union
+from pydantic import BaseModel, Field, field_validator
 from datetime import datetime
 
 
@@ -18,7 +18,8 @@ class JobDescription(BaseModel):
     keywords: List[str] = Field(default_factory=list, description="Extracted keywords")
     embeddings: Optional[List[float]] = Field(None, description="Job description embeddings")
     
-    @validator('required_skills', 'preferred_skills', 'keywords')
+    @field_validator('required_skills', 'preferred_skills', 'keywords')
+    @classmethod
     def skills_must_not_be_empty(cls, v):
         if v and any(not skill.strip() for skill in v):
             raise ValueError('Skills cannot be empty strings')
@@ -27,22 +28,96 @@ class JobDescription(BaseModel):
 
 class Education(BaseModel):
     """Education information model."""
-    degree: str = Field(..., description="Degree type (e.g., Bachelor's, Master's)")
-    field: str = Field(..., description="Field of study")
-    institution: str = Field(..., description="Institution name")
+    degree: Optional[str] = Field(None, description="Degree type (e.g., Bachelor's, Master's)")
+    field: Optional[str] = Field(None, description="Field of study")
+    institution: Optional[str] = Field(None, description="Institution name")
     graduation_year: Optional[int] = Field(None, description="Graduation year")
     gpa: Optional[float] = Field(None, ge=0.0, le=4.0, description="GPA if available")
+    
+    @field_validator('graduation_year', mode='before')
+    @classmethod
+    def validate_graduation_year(cls, v):
+        """Handle placeholder text and convert to integer."""
+        if v is None:
+            return None
+        if isinstance(v, int):
+            return v
+        if isinstance(v, str):
+            # Handle placeholder text
+            if any(placeholder in v.lower() for placeholder in ['graduation year', 'yyyy', 'year', 'placeholder']):
+                return None
+            # Try to extract year from string
+            import re
+            year_match = re.search(r'\b(19|20)\d{2}\b', v)
+            if year_match:
+                return int(year_match.group())
+            # Try to convert directly
+            try:
+                return int(v)
+            except ValueError:
+                return None
+        return None
+    
+    @field_validator('gpa', mode='before')
+    @classmethod
+    def validate_gpa(cls, v):
+        """Handle placeholder text and convert to float."""
+        if v is None:
+            return None
+        if isinstance(v, (int, float)):
+            return float(v)
+        if isinstance(v, str):
+            # Handle placeholder text
+            if any(placeholder in v.lower() for placeholder in ['gpa if mentioned', 'gpa', 'placeholder', 'not mentioned']):
+                return None
+            # Try to extract number from string
+            import re
+            gpa_match = re.search(r'\b\d+\.?\d*\b', v)
+            if gpa_match:
+                try:
+                    gpa_val = float(gpa_match.group())
+                    # Ensure GPA is in reasonable range
+                    if 0.0 <= gpa_val <= 4.0:
+                        return gpa_val
+                except ValueError:
+                    pass
+            # Try to convert directly
+            try:
+                gpa_val = float(v)
+                if 0.0 <= gpa_val <= 4.0:
+                    return gpa_val
+            except ValueError:
+                pass
+        return None
 
 
 class Experience(BaseModel):
     """Work experience model."""
-    title: str = Field(..., description="Job title")
-    company: str = Field(..., description="Company name")
+    title: Optional[str] = Field(None, description="Job title")
+    company: Optional[str] = Field(None, description="Company name")
     start_date: Optional[str] = Field(None, description="Start date")
     end_date: Optional[str] = Field(None, description="End date (None for current)")
     duration_months: Optional[int] = Field(None, ge=0, description="Duration in months")
-    description: str = Field(..., description="Job description")
+    description: Optional[str] = Field(None, description="Job description")
     skills_used: List[str] = Field(default_factory=list, description="Skills used in this role")
+
+
+class Project(BaseModel):
+    """Project information model."""
+    title: Optional[str] = Field(None, description="Project title")
+    project_type: Optional[str] = Field(None, description="Type: Personal/Academic/Open Source/Freelance")
+    tech_stack: List[str] = Field(default_factory=list, description="Technologies used")
+    description: Optional[str] = Field(None, description="Project description")
+    github_url: Optional[str] = Field(None, description="GitHub repository URL")
+    demo_url: Optional[str] = Field(None, description="Demo/live URL")
+
+
+class Certification(BaseModel):
+    """Certification information model."""
+    name: Optional[str] = Field(None, description="Certification name")
+    issuer: Optional[str] = Field(None, description="Issuing organization")
+    date_earned: Optional[str] = Field(None, description="Date earned")
+    expiry_date: Optional[str] = Field(None, description="Expiry date if applicable")
 
 
 class CV(BaseModel):
@@ -53,9 +128,18 @@ class CV(BaseModel):
     email: Optional[str] = Field(None, description="Email address")
     phone: Optional[str] = Field(None, description="Phone number")
     linkedin_url: Optional[str] = Field(None, description="LinkedIn profile URL")
+    github_url: Optional[str] = Field(None, description="GitHub profile URL")
+    portfolio_url: Optional[str] = Field(None, description="Portfolio website URL")
+    location: Optional[str] = Field(None, description="Location (city, country)")
+    professional_summary: Optional[str] = Field(None, description="Professional summary/objective")
     skills: List[str] = Field(default_factory=list, description="Technical skills")
     experience: List[Experience] = Field(default_factory=list, description="Work experience")
     education: List[Education] = Field(default_factory=list, description="Education")
+    projects: List[Project] = Field(default_factory=list, description="Projects")
+    certifications: List[Certification] = Field(default_factory=list, description="Certifications")
+    awards: List[str] = Field(default_factory=list, description="Awards and achievements")
+    publications: List[str] = Field(default_factory=list, description="Publications and talks")
+    languages: List[str] = Field(default_factory=list, description="Languages spoken")
     total_experience_years: Optional[float] = Field(None, ge=0, description="Total years of experience")
     processed_at: datetime = Field(default_factory=datetime.now, description="Processing timestamp")
     
@@ -63,6 +147,7 @@ class CV(BaseModel):
     skills_embeddings: Optional[List[float]] = Field(None, description="Skills embeddings")
     experience_embeddings: Optional[List[float]] = Field(None, description="Experience embeddings")
     education_embeddings: Optional[List[float]] = Field(None, description="Education embeddings")
+    projects_embeddings: Optional[List[float]] = Field(None, description="Projects embeddings")
 
 
 class MatchingScore(BaseModel):

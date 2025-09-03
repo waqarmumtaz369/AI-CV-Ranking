@@ -29,7 +29,7 @@ uv pip install -r requirements.txt
 **Alternative manual start:**
 ```bash
 source .venv/bin/activate
-vllm serve Qwen/Qwen3-0.6B \
+vllm serve Qwen/Qwen2.5-0.5B \
   --gpu-memory-utilization 0.7 \
   --max-model-len 3072 \
   --max-num-seqs 6 \
@@ -68,7 +68,7 @@ curl http://localhost:8000/health
 curl -X POST "http://localhost:8000/v1/chat/completions" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "Qwen/Qwen3-0.6B",
+    "model": "Qwen/Qwen2.5-0.5B",
     "messages": [{"role": "user", "content": "Hello!"}],
     "max_tokens": 50
   }'

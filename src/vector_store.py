@@ -6,7 +6,6 @@ import uuid
 from typing import List, Dict, Any, Optional, Tuple
 import chromadb
 from chromadb.config import Settings
-from sentence_transformers import SentenceTransformer
 from .models import CV, JobDescription
 
 
@@ -16,7 +15,9 @@ class VectorStore:
     def __init__(self, persist_directory: str = "./chroma_db", embedding_model: str = "all-MiniLM-L6-v2"):
         """Initialize the vector store."""
         self.persist_directory = persist_directory
-        self.embedding_model = SentenceTransformer(embedding_model)
+        # For Phase 1, we'll use simple hash-based embeddings
+        # This avoids the sentence_transformers dependency conflict
+        self.embedding_model = None
         
         # Initialize ChromaDB client
         self.client = chromadb.PersistentClient(

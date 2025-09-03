@@ -21,6 +21,42 @@ class MatchingEngine:
         job_skills_lower = [skill.lower().strip() for skill in job_skills]
         cv_skills_lower = [skill.lower().strip() for skill in cv_skills]
         
+        # Common skill aliases for better matching
+        skill_aliases = {
+            'javascript': ['js', 'node.js', 'nodejs'],
+            'python': ['py', 'python3'],
+            'c++': ['cpp', 'c plus plus'],
+            'c#': ['csharp', 'c sharp'],
+            'react': ['reactjs', 'react.js'],
+            'angular': ['angularjs', 'angular.js'],
+            'vue': ['vuejs', 'vue.js'],
+            'aws': ['amazon web services'],
+            'azure': ['microsoft azure'],
+            'gcp': ['google cloud'],
+            'machine learning': ['ml'],
+            'artificial intelligence': ['ai'],
+            'data science': ['datascience'],
+            'deep learning': ['deeplearning'],
+            'natural language processing': ['nlp'],
+            'computer vision': ['cv'],
+            'postgresql': ['postgres'],
+            'mongodb': ['mongo'],
+            'elasticsearch': ['elastic search'],
+            'github': ['git hub'],
+            'gitlab': ['git lab'],
+            'microservices': ['micro services'],
+            'rest api': ['restful api'],
+            'graphql': ['graph ql'],
+            'typescript': ['ts'],
+            'spring boot': ['springboot'],
+            'red hat': ['redhat'],
+            'macos': ['mac os'],
+            'vscode': ['visual studio code', 'vs code'],
+            'intellij': ['intellij idea'],
+            'power bi': ['powerbi'],
+            'tableau': ['tableau bi']
+        }
+        
         matched_skills = []
         total_score = 0.0
         
@@ -28,27 +64,46 @@ class MatchingEngine:
             best_match_score = 0.0
             best_match_skill = None
             
-            for cv_skill in cv_skills_lower:
-                # Exact match
-                if job_skill == cv_skill:
-                    match_score = 1.0
-                # Partial match using sequence matcher
-                else:
-                    match_score = SequenceMatcher(None, job_skill, cv_skill).ratio()
-                
-                # Check for keyword overlap
-                job_words = set(job_skill.split())
-                cv_words = set(cv_skill.split())
-                if job_words.intersection(cv_words):
-                    match_score = max(match_score, 0.7)
-                
-                if match_score > best_match_score and match_score > 0.6:  # Threshold for matching
-                    best_match_score = match_score
-                    best_match_skill = cv_skill
+            # Check for exact match first
+            if job_skill in cv_skills_lower:
+                matched_skills.append(job_skill)
+                total_score += 1.0
+                continue
             
-            if best_match_skill:
-                matched_skills.append(best_match_skill)
-                total_score += best_match_score
+            # Check for alias matches
+            job_aliases = skill_aliases.get(job_skill, [])
+            for alias in job_aliases:
+                if alias in cv_skills_lower:
+                    matched_skills.append(alias)
+                    total_score += 0.9
+                    break
+            else:
+                # Check for partial matches
+                for cv_skill in cv_skills_lower:
+                    # Exact match
+                    if job_skill == cv_skill:
+                        match_score = 1.0
+                    # Partial match using sequence matcher
+                    else:
+                        match_score = SequenceMatcher(None, job_skill, cv_skill).ratio()
+                    
+                    # Check for keyword overlap
+                    job_words = set(job_skill.split())
+                    cv_words = set(cv_skill.split())
+                    if job_words.intersection(cv_words):
+                        match_score = max(match_score, 0.7)
+                    
+                    # Check for substring matches
+                    if job_skill in cv_skill or cv_skill in job_skill:
+                        match_score = max(match_score, 0.8)
+                    
+                    if match_score > best_match_score and match_score > 0.4:  # Lowered threshold for better matching
+                        best_match_score = match_score
+                        best_match_skill = cv_skill
+                
+                if best_match_skill:
+                    matched_skills.append(best_match_skill)
+                    total_score += best_match_score
         
         # Calculate average score
         similarity_score = total_score / len(job_skills) if job_skills else 0.0
