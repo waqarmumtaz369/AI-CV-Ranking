@@ -10,24 +10,17 @@ except ImportError:
     SENTENCE_TRANSFORMERS_AVAILABLE = False
 from models import JobDescription
 
+# Import the singleton function
+from embedding_singleton import get_embedding_model
+
 
 class JobDescriptionProcessor:
     """Processes job descriptions to extract keywords and generate embeddings."""
     
     def __init__(self, embedding_model: str = "all-MiniLM-L6-v2"):
         """Initialize the processor with an embedding model."""
-        # Initialize sentence transformer for real embeddings
-        if SENTENCE_TRANSFORMERS_AVAILABLE:
-            try:
-                self.embedding_model = SentenceTransformer(embedding_model)
-                print(f"✅ Loaded embedding model: {embedding_model}")
-            except Exception as e:
-                print(f"Warning: Could not load embedding model {embedding_model}: {e}")
-                print("Falling back to hash-based embeddings")
-                self.embedding_model = None
-        else:
-            print("Warning: sentence-transformers not available, using hash-based embeddings")
-            self.embedding_model = None
+        # Use singleton embedding model to prevent multiple loads
+        self.embedding_model = get_embedding_model(embedding_model)
         
     def extract_keywords(self, text: str) -> List[str]:
         """Extract keywords from job description text."""

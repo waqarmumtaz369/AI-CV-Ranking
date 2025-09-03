@@ -15,6 +15,9 @@ except ImportError:
     SENTENCE_TRANSFORMERS_AVAILABLE = False
 from models import CV, Experience, Education, Project, Certification
 
+# Import the singleton function
+from embedding_singleton import get_embedding_model
+
 
 class CVProcessor:
     """Processes CV/Resume files to extract structured information."""
@@ -22,18 +25,8 @@ class CVProcessor:
     def __init__(self, vllm_url: str = "http://localhost:8000", embedding_model: str = "all-MiniLM-L6-v2"):
         """Initialize the CV processor."""
         self.vllm_url = vllm_url
-        # Initialize sentence transformer for real embeddings
-        if SENTENCE_TRANSFORMERS_AVAILABLE:
-            try:
-                self.embedding_model = SentenceTransformer(embedding_model)
-                print(f"✅ Loaded embedding model: {embedding_model}")
-            except Exception as e:
-                print(f"Warning: Could not load embedding model {embedding_model}: {e}")
-                print("Falling back to hash-based embeddings")
-                self.embedding_model = None
-        else:
-            print("Warning: sentence-transformers not available, using hash-based embeddings")
-            self.embedding_model = None
+        # Use singleton embedding model to prevent multiple loads
+        self.embedding_model = get_embedding_model(embedding_model)
         
     def extract_text_from_pdf(self, pdf_path: str) -> str:
         """Extract text from PDF file."""
@@ -148,7 +141,9 @@ class CVProcessor:
 
         IMPORTANT:
         - Extract ONLY REAL data from the CV, not placeholder examples
-        - Use null for missing information
+        - Use null for missing information, NEVER use "Unknown Company", "Unknown Institution", or similar placeholders
+        - For experience: If company name is not clear, use null instead of "Unknown Company"
+        - For education: If institution name is not clear, use null instead of "Unknown Institution"
         - For skills, include both technical and soft skills mentioned
         - For experience, focus on achievements with metrics when available
         - For projects, prioritize those with GitHub links or detailed descriptions
@@ -307,20 +302,21 @@ class CVProcessor:
             combined_data[field] = combined_list
         
         # For complex objects (experience, education, projects, certifications)
-        # Prefer LLM data but supplement with fallback data
+        # Use only LLM data to avoid duplicates, with better deduplication
         for field in ['experience', 'education', 'projects', 'certifications']:
             llm_list = llm_data.get(field, [])
-            fallback_list = fallback_data.get(field, [])
             
-            # Start with LLM data
-            combined_list = llm_list.copy()
-            
-            # Add fallback data if LLM data is insufficient
-            if len(combined_list) < len(fallback_list):
-                # Add missing items from fallback
-                for fallback_item in fallback_list:
-                    if not self._item_exists_in_list(fallback_item, combined_list):
-                        combined_list.append(fallback_item)
+            # Deduplicate LLM data more aggressively
+            if field == 'experience':
+                combined_list = self._deduplicate_experience(llm_list)
+            elif field == 'education':
+                combined_list = self._deduplicate_education(llm_list)
+            elif field == 'projects':
+                combined_list = self._deduplicate_projects(llm_list)
+            elif field == 'certifications':
+                combined_list = self._deduplicate_certifications(llm_list)
+            else:
+                combined_list = llm_list
             
             combined_data[field] = combined_list
         
@@ -370,6 +366,170 @@ class CVProcessor:
             return item.get('title', '')
         else:
             return str(item)
+    
+    def _deduplicate_experience(self, experience_list: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Remove duplicate experience entries."""
+        seen = set()
+        deduplicated = []
+        
+        for exp in experience_list:
+            if not isinstance(exp, dict):
+                continue
+                
+            # Create a key based on title, company, and dates
+            title = exp.get('title', '').strip().lower()
+            company = exp.get('company', '').strip().lower()
+            start_date = exp.get('start_date', '').strip()
+            end_date = exp.get('end_date', '').strip()
+            
+            # Skip if all key fields are empty or placeholder
+            if not title or not company or title in ['unknown', 'none', ''] or company in ['unknown', 'none', ''] or company is None or title is None:
+                continue
+            
+            # Skip if title or company contains generic/placeholder text
+            if any(placeholder in title for placeholder in ['unknown', 'none', 'placeholder', 'example']):
+                continue
+            if any(placeholder in company for placeholder in ['unknown', 'none', 'placeholder', 'example', 'unknown company']):
+                continue
+            
+            # Skip if company is exactly "Unknown Company" (case insensitive)
+            if company.lower() == 'unknown company':
+                continue
+                
+            # Create a more robust key for deduplication
+            key = f"{title}_{company}_{start_date}_{end_date}"
+            
+            if key not in seen:
+                seen.add(key)
+                deduplicated.append(exp)
+        
+        # If we still have too many entries, limit to most recent/meaningful ones
+        if len(deduplicated) > 10:
+            # Sort by date and take the most recent 10
+            deduplicated.sort(key=lambda x: x.get('start_date', ''), reverse=True)
+            deduplicated = deduplicated[:10]
+        
+        return deduplicated
+    
+    def _deduplicate_education(self, education_list: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Remove duplicate education entries."""
+        seen = set()
+        deduplicated = []
+        
+        for edu in education_list:
+            if not isinstance(edu, dict):
+                continue
+                
+            # Create a key based on degree, institution, and year
+            degree = edu.get('degree', '').strip().lower()
+            institution = edu.get('institution', '').strip().lower()
+            year = edu.get('graduation_year', '')
+            
+            # Skip if all key fields are empty or placeholder
+            if not degree or not institution or degree in ['unknown', 'none', ''] or institution in ['unknown', 'none', ''] or institution is None or degree is None:
+                continue
+            
+            # Skip if degree or institution contains generic/placeholder text
+            if any(placeholder in degree for placeholder in ['unknown', 'none', 'placeholder', 'example']):
+                continue
+            if any(placeholder in institution for placeholder in ['unknown', 'none', 'placeholder', 'example', 'unknown institution']):
+                continue
+            
+            # Skip if institution is exactly "Unknown Institution" (case insensitive)
+            if institution.lower() == 'unknown institution':
+                continue
+            
+            # Skip if degree is too short (likely not a real degree)
+            if len(degree) < 2:
+                continue
+            
+            # Skip if institution is too short (likely not a real institution)
+            if len(institution) < 3:
+                continue
+                
+            key = f"{degree}_{institution}_{year}"
+            
+            if key not in seen:
+                seen.add(key)
+                deduplicated.append(edu)
+        
+        # If we still have too many entries, limit to most recent/meaningful ones
+        if len(deduplicated) > 5:
+            # Sort by year and take the most recent 5
+            deduplicated.sort(key=lambda x: x.get('graduation_year', 0) or 0, reverse=True)
+            deduplicated = deduplicated[:5]
+        
+        return deduplicated
+    
+    def _deduplicate_projects(self, projects_list: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Remove duplicate project entries."""
+        seen = set()
+        deduplicated = []
+        
+        for proj in projects_list:
+            if not isinstance(proj, dict):
+                continue
+                
+            # Create a key based on title and description
+            title = proj.get('title', '').strip().lower()
+            description = proj.get('description', '').strip().lower()
+            
+            # Skip if title is empty or placeholder
+            if not title or title in ['unknown', 'none', '']:
+                continue
+            
+            # Skip if title contains generic/placeholder text
+            if any(placeholder in title for placeholder in ['unknown', 'none', 'placeholder', 'example']):
+                continue
+            
+            # Skip if title is too short (likely not a real project)
+            if len(title) < 3:
+                continue
+                
+            # Use first 50 chars of description for key
+            desc_key = description[:50] if description else ''
+            key = f"{title}_{desc_key}"
+            
+            if key not in seen:
+                seen.add(key)
+                deduplicated.append(proj)
+        
+        # If we still have too many entries, limit to most meaningful ones
+        if len(deduplicated) > 8:
+            # Sort by description length (longer descriptions are usually more meaningful)
+            deduplicated.sort(key=lambda x: len(x.get('description', '')), reverse=True)
+            deduplicated = deduplicated[:8]
+        
+        return deduplicated
+    
+    def _deduplicate_certifications(self, certs_list: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Remove duplicate certification entries."""
+        seen = set()
+        deduplicated = []
+        
+        for cert in certs_list:
+            if not isinstance(cert, dict):
+                continue
+                
+            # Create a key based on name and issuer
+            name = cert.get('name', '').strip().lower()
+            issuer = cert.get('issuer', '').strip().lower()
+            
+            # Skip if name is empty or placeholder
+            if not name or name in ['unknown', 'none', '']:
+                continue
+            
+            # Skip if name contains generic/placeholder text
+            if any(placeholder in name for placeholder in ['unknown', 'none', 'placeholder', 'example']):
+                continue
+                
+            key = f"{name}_{issuer}"
+            
+            if key not in seen:
+                seen.add(key)
+                deduplicated.append(cert)
+        
+        return deduplicated
     
     def _fallback_extraction(self, cv_text: str) -> Dict[str, Any]:
         """Fallback extraction using regex patterns if LLM fails."""

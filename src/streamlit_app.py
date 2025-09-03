@@ -14,6 +14,7 @@ from job_processor import JobDescriptionProcessor
 from cv_processor import CVProcessor
 from vector_store import VectorStore
 from matching_engine import MatchingEngine
+from embedding_singleton import get_cache_info
 
 
 class StreamlitApp:
@@ -21,11 +22,6 @@ class StreamlitApp:
     
     def __init__(self):
         """Initialize the Streamlit app."""
-        self.job_processor = JobDescriptionProcessor()
-        self.cv_processor = CVProcessor()
-        self.vector_store = VectorStore()
-        self.matching_engine = MatchingEngine()
-        
         # Initialize session state
         if 'processed_job' not in st.session_state:
             st.session_state.processed_job = None
@@ -35,6 +31,26 @@ class StreamlitApp:
             st.session_state.matching_results = []
         if 'processing_status' not in st.session_state:
             st.session_state.processing_status = None
+        if 'analysis_running' not in st.session_state:
+            st.session_state.analysis_running = False
+        if 'analysis_completed' not in st.session_state:
+            st.session_state.analysis_completed = False
+        
+        # Cache processors in session state to avoid reloading
+        if 'job_processor' not in st.session_state:
+            st.session_state.job_processor = JobDescriptionProcessor()
+        if 'cv_processor' not in st.session_state:
+            st.session_state.cv_processor = CVProcessor()
+        if 'vector_store' not in st.session_state:
+            st.session_state.vector_store = VectorStore()
+        if 'matching_engine' not in st.session_state:
+            st.session_state.matching_engine = MatchingEngine()
+        
+        # Set instance variables from session state
+        self.job_processor = st.session_state.job_processor
+        self.cv_processor = st.session_state.cv_processor
+        self.vector_store = st.session_state.vector_store
+        self.matching_engine = st.session_state.matching_engine
     
     def run(self):
         """Run the Streamlit application."""
@@ -84,6 +100,13 @@ class StreamlitApp:
         stats = self.vector_store.get_collection_stats()
         st.sidebar.metric("CVs Stored", stats["cv_count"])
         st.sidebar.metric("Jobs Stored", stats["job_count"])
+        
+        # Embedding model cache info
+        st.sidebar.subheader("🧠 Embedding Cache")
+        cache_info = get_cache_info()
+        st.sidebar.metric("Cached Models", cache_info["cache_size"])
+        if cache_info["cached_models"]:
+            st.sidebar.text(f"Models: {', '.join(cache_info['cached_models'])}")
         
         # Clear data button
         if st.sidebar.button("🗑️ Clear All Data", type="secondary"):
@@ -320,7 +343,7 @@ class StreamlitApp:
                                 st.markdown(f"• {lang}")
                         
                         # Raw Data (Optional)
-                        if st.checkbox(f"Show Raw Data for {display_filename}"):
+                        if st.checkbox(f"Show Raw Data for {display_filename}", key=f"raw_data_cv_{i}_{cv.filename}"):
                             st.json(cv.dict())
     
     def _process_uploaded_cvs(self, uploaded_files):
@@ -381,9 +404,19 @@ class StreamlitApp:
             st.warning("⚠️ Please process some CVs first.")
             return
         
-        # Match button
-        if st.button("🎯 Run Matching Analysis", type="primary"):
-            self._run_matching_analysis()
+        # Match button and reset button
+        col1, col2 = st.columns([1, 1])
+        
+        with col1:
+            if st.button("🎯 Run Matching Analysis", type="primary"):
+                self._run_matching_analysis()
+        
+        with col2:
+            if st.button("🔄 Reset Analysis"):
+                st.session_state.matching_results = []
+                st.session_state.analysis_completed = False
+                st.session_state.analysis_running = False
+                st.rerun()
         
         # Display results
         if st.session_state.matching_results:
@@ -391,8 +424,14 @@ class StreamlitApp:
     
     def _run_matching_analysis(self):
         """Run the matching analysis."""
-        with st.spinner("🔍 Running matching analysis..."):
-            try:
+        # Check if analysis is already running to prevent loops
+        if 'analysis_running' in st.session_state and st.session_state.analysis_running:
+            return
+        
+        st.session_state.analysis_running = True
+        
+        try:
+            with st.spinner("🔍 Running matching analysis..."):
                 job = st.session_state.processed_job
                 cvs = st.session_state.processed_cvs
                 
@@ -405,11 +444,14 @@ class StreamlitApp:
                 # Rank results
                 ranked_results = self.matching_engine.rank_cvs(matching_results)
                 st.session_state.matching_results = ranked_results
+                st.session_state.analysis_completed = True
                 
                 st.success(f"✅ Matching analysis completed for {len(ranked_results)} CVs!")
                 
-            except Exception as e:
-                st.error(f"❌ Error running matching analysis: {str(e)}")
+        except Exception as e:
+            st.error(f"❌ Error running matching analysis: {str(e)}")
+        finally:
+            st.session_state.analysis_running = False
     
     def _display_matching_results(self):
         """Display the matching results."""
@@ -589,7 +631,7 @@ class StreamlitApp:
                             st.markdown(f"• {lang}")
                     
                     # Raw Data (Optional)
-                    if st.checkbox(f"Show Raw Data for {display_filename}"):
+                    if st.checkbox(f"Show Raw Data for {display_filename}", key=f"raw_data_{result.rank}_{cv_obj.filename}"):
                         st.json(cv_obj.dict())
                 else:
                     st.warning("CV object not found in session state")

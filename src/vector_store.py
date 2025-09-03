@@ -13,6 +13,9 @@ except ImportError:
     SENTENCE_TRANSFORMERS_AVAILABLE = False
 from models import CV, JobDescription
 
+# Import the singleton function
+from embedding_singleton import get_embedding_model
+
 
 class VectorStore:
     """ChromaDB-based vector store for CV and job description embeddings."""
@@ -20,18 +23,8 @@ class VectorStore:
     def __init__(self, persist_directory: str = "./chroma_db", embedding_model: str = "all-MiniLM-L6-v2"):
         """Initialize the vector store."""
         self.persist_directory = persist_directory
-        # Initialize sentence transformer for real embeddings
-        if SENTENCE_TRANSFORMERS_AVAILABLE:
-            try:
-                self.embedding_model = SentenceTransformer(embedding_model)
-                print(f"✅ Loaded embedding model: {embedding_model}")
-            except Exception as e:
-                print(f"Warning: Could not load embedding model {embedding_model}: {e}")
-                print("Falling back to hash-based embeddings")
-                self.embedding_model = None
-        else:
-            print("Warning: sentence-transformers not available, using hash-based embeddings")
-            self.embedding_model = None
+        # Use singleton embedding model to prevent multiple loads
+        self.embedding_model = get_embedding_model(embedding_model)
         
         # Initialize ChromaDB client
         self.client = chromadb.PersistentClient(
